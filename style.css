@@ -4,3 +4,9 @@ body {
        */
     font: 100%/1.5 system-ui;
   }
+
+  img {
+    max-width: 400px;   /* or 50%, or whatever you like */
+    height: auto;       /* keeps the proportions correct */
+  }
+  
