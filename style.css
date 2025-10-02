@@ -1,12 +1,15 @@
 body {
     /* Set line height to 1.5 times the font size
-         and use the OS’s UI font as the website font
-       */
+       and use the OS’s UI font as the website font
+    */
     font: 100%/1.5 system-ui;
   }
-
+  
+  /* Add this for images */
   img {
-    max-width: 400px;   /* or 50%, or whatever you like */
-    height: auto;       /* keeps the proportions correct */
+    max-width: 400px;  /* scales big photos down */
+    height: auto;      /* keeps proportions correct */
+    display: block;    /* lets us control spacing */
+    margin: 20px 0;    /* adds breathing room */
   }
   
