@@ -15,5 +15,27 @@
     </nav>
     <h1>Contact</h1>      
     <p>You can reach me at: aqiao@ucsd.edu</p>
+
+    <form action = "mailto:aqiao@ucsd.edu" method="POST" enctype="text/plain">
+        <label>
+            Your Email:
+            <input type = "email" name = "email" required>
+        </label>
+        <br>
+
+        <label>
+            Subject:
+            <input type = "text" name = "subject" required>
+        </label>
+        <br>
+
+        <label>
+            Message:
+            <textarea name = "body" required></textarea>
+        </label>
+        <br>
+
+        <button>Send Message</button>
+    </form>
 </body>
 </html>
