@@ -18,7 +18,7 @@ body {
   }
   
   :root {
-    --color-accent: oklch(65% 50% 350);
+    --color-accent: oklch(65% 60% 300);
 }
 
 html {
