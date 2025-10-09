@@ -48,3 +48,24 @@ nav a:hover {
     border-bottom: 0.4em solid var(--color-accent); /* Colorful underline on hover */
     padding-bottom: 0.1em;
 }
+
+input, textarea, button {
+  font: inherit; 
+}
+
+form {
+  display: grid;
+  grid-template-columns: auto 1fr; /* auto: as wide as longest label, 1fr: takes all remaining space for inputs */
+  gap: 1em;
+}
+
+form label {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1; /* makes labels and buttons full width */
+}
+
+form button {
+  grid-column: 1/ -1;
+  justify-self:start;
+}
