@@ -14,6 +14,37 @@ body {
     max-width: 400px;  /* scales big photos down */
     height: auto;      /* keeps proportions correct */
     display: block;    /* lets us control spacing */
-    margin: 20px 0;    /* adds breathing room */
+    margin: 20px 0;   
   }
   
+  :root {
+    --color-accent: oklch(65% 50% 350);
+}
+
+html {
+    accent-color: var(--color-accent); /* Makes form elements use your color */
+}
+
+nav {
+    display: flex;                   
+    margin-bottom: 2rem;         
+    border-bottom: 1px solid oklch(80% 3% 200); 
+}
+
+nav a {
+    flex: 1;                         /* Each link takes equal space */
+    text-decoration: none;       
+    color: inherit;                  /* Use same text color as surrounding text */
+    text-align: center;              /* Centers text in each link box */
+    padding: 0.5em;              
+}
+
+nav a.current {
+    border-bottom: 0.4em solid oklch(80% 3% 200);
+    padding-bottom: 0.1em;           /* Adjusts for the thick border */
+}
+
+nav a:hover {
+    border-bottom: 0.4em solid var(--color-accent); /* Colorful underline on hover */
+    padding-bottom: 0.1em;
+}
