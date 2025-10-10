@@ -69,3 +69,30 @@ form button {
   grid-column: 1/ -1;
   justify-self:start;
 }
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+  gap: 1em;
+}
+
+.projects article {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  margin: 0;
+}
+
+.projects h2 {
+  margin: 0;
+}
+
+/* better heading */
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.1;    /* Tighter spacing for headings */
+    text-wrap: balance;  /* Prevents uneven lines */
+}
+
+h1 {
+    font-size: 400%;     /* Makes h1 much larger than h2 */
+}
