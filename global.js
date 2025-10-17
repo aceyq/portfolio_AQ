@@ -100,3 +100,44 @@ if ('colorScheme' in localStorage) {
 select.addEventListener('input', function (event) {
     setColorScheme(event.target.value);
 });
+
+// Step 5: Better Contact Form
+const form = document.querySelector('form[action^="mailto:"]');
+
+form?.addEventListener('submit', function (event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    
+    console.log('📧 Form submitted! Building better email...');
+    
+    // Get form data
+    const data = new FormData(this);
+    
+    // Start building the URL with the base action
+    let url = this.action;
+    let firstParam = true;
+    
+    // Add each form field to the URL with proper encoding
+    for (let [name, value] of data) {
+        // Properly encode the value (spaces become %20 instead of +)
+        const encodedValue = encodeURIComponent(value);
+        
+        // Add ? before first parameter, & before subsequent ones
+        if (firstParam) {
+            url += '?';
+            firstParam = false;
+        } else {
+            url += '&';
+        }
+        
+        // Add the parameter (name=encodedValue)
+        url += `${name}=${encodedValue}`;
+        
+        console.log(`   ${name}: ${value} → ${encodedValue}`);
+    }
+    
+    console.log('📨 Final URL:', url);
+    
+    // Open the email client with the properly encoded URL
+    location.href = url;
+});
