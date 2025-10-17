@@ -1,3 +1,19 @@
+/* === DARK MODE SUPPORT === */
+:root {
+  color-scheme: light dark;
+}
+
+/* Define border color that works in both light and dark */
+nav {
+  --border-color: oklch(50% 10% 200 / 40%);
+  border-bottom-color: var(--border-color);
+}
+
+/* Make form controls use same font */
+select {
+  font: inherit;
+}
+
 body {
     /* Set line height to 1.5 times the font size
        and use the OS’s UI font as the website font
@@ -146,4 +162,20 @@ h1 {
 .cv-article h3 {
   margin: 0 0 0.5rem 0;
   color: oklch(30% 3% 200);
+}
+
+/* === THEME SWITCHER STYLES === */
+.color-scheme {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 80%;
+}
+
+.color-scheme select {
+  background: inherit;
+  color: inherit;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.2em;
 }

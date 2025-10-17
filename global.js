@@ -1,3 +1,4 @@
+
 // Step 2.1: Get all nav links
 // const navLinks = $$("nav a");
 
@@ -63,3 +64,39 @@ for (let p of pages) {
   
   nav.append(a);
 }
+
+// Step 4: Dark Mode Switcher
+// Add theme switcher HTML
+document.body.insertAdjacentHTML(
+    'afterbegin',
+    `
+    <label class="color-scheme">
+        Theme:
+        <select>
+            <option value="light dark">Automatic</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+        </select>
+    </label>
+    `
+);
+
+// Get reference to the select element
+const select = document.querySelector('.color-scheme select');
+
+// Function to set color scheme
+function setColorScheme(colorScheme) {
+    document.documentElement.style.setProperty('color-scheme', colorScheme);
+    localStorage.colorScheme = colorScheme;
+}
+
+// Load saved preference
+if ('colorScheme' in localStorage) {
+    setColorScheme(localStorage.colorScheme);
+    select.value = localStorage.colorScheme;
+}
+
+// Listen for changes
+select.addEventListener('input', function (event) {
+    setColorScheme(event.target.value);
+});
