@@ -7,7 +7,7 @@ const projectsContainer = document.querySelector('.projects');
 renderProjects(projects, projectsContainer, 'h2');
 
 // Add project count to the page title
-const pageTitle = document.querySelector('h1');
+const pageTitle = document.querySelector('.projects-title');
 if (pageTitle) {
-  pageTitle.textContent += ` (${projects.length} projects)`;
+  pageTitle.textContent = `Projects (${projects.length})`;
 }
