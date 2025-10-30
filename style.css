@@ -211,3 +211,10 @@ h1 {
   border-top: 1px solid oklch(80% 3% 200 / 40%);
   padding-top: 0.5rem;
 }
+
+/* Pie chart styling */
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 2em;
+  overflow: visible;
+}
