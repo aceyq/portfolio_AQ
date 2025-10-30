@@ -13,18 +13,24 @@ if (pageTitle) {
     pageTitle.textContent = `Projects (${projects.length})`;
 }
 
-// Step 1-2: Create pie chart with D3 and legend
-// Count projects by year
-const yearCounts = {};
-projects.forEach(project => {
-    yearCounts[project.year] = (yearCounts[project.year] || 0) + 1;
+// Step 3: Use actual project data for pie chart
+// Group projects by year and count them using d3.rollups()
+let rolledData = d3.rollups(
+    projects,
+    (v) => v.length,  // Count projects in each year group
+    (d) => d.year     // Group by year field
+);
+
+// Convert to the format needed for our pie chart
+let data = rolledData.map(([year, count]) => {
+    return { 
+        value: count, 
+        label: `Year ${year}` 
+    };
 });
 
-// Convert to array of objects with labels
-const data = Object.keys(yearCounts).map(year => ({
-    label: `Year ${year}`,
-    value: yearCounts[year]
-}));
+console.log('📊 Rolled data:', rolledData);
+console.log('📈 Pie chart data:', data);
 
 // Create arc generator
 const arcGenerator = d3.arc()
@@ -48,7 +54,7 @@ arcData.forEach((slice, idx) => {
         .attr('stroke-width', 2);
 });
 
-// Step 2.2: Create legend
+// Create legend
 const legend = d3.select('.legend');
 data.forEach((d, idx) => {
     legend
@@ -57,5 +63,3 @@ data.forEach((d, idx) => {
         .attr('class', 'legend-item')
         .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`);
 });
-
-console.log('📊 Pie chart data:', data);
