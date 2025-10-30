@@ -215,6 +215,7 @@ h1 {
 /* Pie chart styling */
 #projects-pie-plot {
   max-width: 20em;
-  margin-block: 2em;
+  margin: 2em auto; /* Center the chart */
+  display: block; /* Ensure it's a block element */
   overflow: visible;
 }
