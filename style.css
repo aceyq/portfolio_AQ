@@ -240,10 +240,10 @@ h1 {
   margin: 0;
   flex: 1; /* Legend occupies all available width */
   
-  /* Border and spacing as specified in instructions */
+  /* Border and spacing - removed background for better dark mode */
   border: 1px solid oklch(80% 3% 200);
   border-radius: 8px;
-  background: oklch(98% 1% 200);
+  /* No background - uses page background */
 }
 
 .legend-item {
@@ -268,4 +268,32 @@ h1 {
   font-style: normal;
   color: oklch(60% 3% 200);
   margin-left: 0.2rem;
+}
+
+/* Dark mode support for legend border */
+@media (prefers-color-scheme: dark) {
+  .legend {
+    border-color: oklch(50% 3% 200);
+  }
+  
+  .legend em {
+    color: oklch(80% 3% 200);
+  }
+}
+
+/* Search bar styling */
+.searchBar {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 1rem 0 2rem 0;
+  border: 1px solid oklch(80% 3% 200);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 1rem;
+}
+
+.searchBar:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px oklch(65% 50% 300 / 20%);
 }
