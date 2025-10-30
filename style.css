@@ -197,3 +197,17 @@ h1 {
   margin: 0;
   font-size: 1.2em;
 }
+
+/* Project year styling */
+.project-content {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.project-year {
+  color: oklch(60% 3% 200);
+  font-size: 0.9em;
+  font-style: italic;
+  border-top: 1px solid oklch(80% 3% 200 / 40%);
+  padding-top: 0.5rem;
+}
