@@ -297,3 +297,34 @@ h1 {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 2px oklch(65% 50% 300 / 20%);
 }
+
+/* Interactive pie chart styles */
+#projects-pie-plot path {
+  transition: 300ms;
+  cursor: pointer;
+}
+
+/* Hover effects for pie chart */
+#projects-pie-plot:has(path:hover) path:not(:hover) {
+  opacity: 0.5;
+}
+
+/* Selected wedge styling */
+#projects-pie-plot path.selected {
+  fill: oklch(60% 45% 0) !important;
+  filter: brightness(1.2);
+}
+
+/* Selected legend item styling */
+.legend-item.selected {
+  --color: oklch(60% 45% 0) !important;
+  background: oklch(90% 3% 200);
+  border-radius: 4px;
+}
+
+/* Dark mode support for selected items */
+@media (prefers-color-scheme: dark) {
+  .legend-item.selected {
+    background: oklch(40% 3% 200);
+  }
+}
