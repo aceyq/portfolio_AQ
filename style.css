@@ -212,13 +212,7 @@ h1 {
   padding-top: 0.5rem;
 }
 
-/* Pie chart styling */
-#projects-pie-plot {
-  max-width: 20em;
-  margin: 2em auto; /* Center the chart */
-  display: block; /* Ensure it's a block element */
-  overflow: visible;
-}
+/* === PIE CHART AND LEGEND STYLING === */
 
 /* Chart container for side-by-side layout */
 .chart-container {
@@ -236,31 +230,35 @@ h1 {
   flex-shrink: 0;
 }
 
-/* Legend styling */
+/* Legend styling - with borders, padding, and proper layout */
 .legend {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
   gap: 0.5rem;
   list-style: none;
-  padding: 0;
+  padding: 1rem;
   margin: 0;
-  flex: 1;
+  flex: 1; /* Legend occupies all available width */
+  
+  /* Border and spacing as specified in instructions */
+  border: 1px solid oklch(80% 3% 200);
+  border-radius: 8px;
+  background: oklch(98% 1% 200);
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.3rem;
-  border-radius: 4px;
+  gap: 0.3rem; /* Smaller gap for better proximity */
+  padding: 0.2rem;
 }
 
-/* Swatch styling */
+/* Swatch styling - make it look like a proper color swatch */
 .swatch {
   display: inline-block;
   width: 1em;
   height: 1em;
-  border-radius: 2px;
+  border-radius: 2px; /* Slight rounding as suggested */
   background-color: var(--color);
   flex-shrink: 0;
 }
