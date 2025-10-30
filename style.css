@@ -219,3 +219,55 @@ h1 {
   display: block; /* Ensure it's a block element */
   overflow: visible;
 }
+
+/* Chart container for side-by-side layout */
+.chart-container {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin: 2em 0;
+  flex-wrap: wrap;
+}
+
+/* Pie chart styling */
+#projects-pie-plot {
+  max-width: 20em;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+/* Legend styling */
+.legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem;
+  border-radius: 4px;
+}
+
+/* Swatch styling */
+.swatch {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-radius: 2px;
+  background-color: var(--color);
+  flex-shrink: 0;
+}
+
+/* Legend text styling */
+.legend em {
+  font-style: normal;
+  color: oklch(60% 3% 200);
+  margin-left: 0.2rem;
+}
