@@ -180,10 +180,10 @@ h1 {
   padding: 0.2em;
 }
 
-/* GitHub Stats Styling */
+/* GitHub Stats Styling - FIXED */
 #profile-stats dl {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin: 1rem 0;
 }
@@ -191,12 +191,23 @@ h1 {
 #profile-stats dt {
   font-weight: bold;
   color: var(--color-accent);
+  grid-row: 1;
+  margin-bottom: 0.5rem;
 }
 
 #profile-stats dd {
   margin: 0;
   font-size: 1.2em;
+  grid-row: 2;
 }
+
+/* Specific grid placement for each stat */
+#profile-stats dt:nth-child(1) { grid-column: 1; } /* Public Repos */
+#profile-stats dd:nth-child(2) { grid-column: 1; }
+#profile-stats dt:nth-child(3) { grid-column: 2; } /* Followers */
+#profile-stats dd:nth-child(4) { grid-column: 2; }
+#profile-stats dt:nth-child(5) { grid-column: 3; } /* Following */
+#profile-stats dd:nth-child(6) { grid-column: 3; }
 
 /* Project year styling */
 .project-content {
