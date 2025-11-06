@@ -24,6 +24,7 @@ let pages = [
   { url: 'projects/', title: 'Projects' },
   { url: 'contact/', title: 'Contact' },
   { url: 'cv/', title: 'Resume' },
+  { url: 'meta/', title: 'Code Analysis' }, // ← NEW LINE
   { url: 'https://github.com/aceyq', title: 'GitHub' }
 ];
 
