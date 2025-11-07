@@ -339,3 +339,35 @@ h1 {
     background: oklch(40% 3% 200);
   }
 }
+
+/* Code Analysis Stats Styling */
+.stats {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border: 1px solid oklch(80% 3% 200);
+  border-radius: 8px;
+  background: oklch(98% 1% 200);
+}
+
+.stats dt {
+  font-weight: bold;
+  color: var(--color-accent);
+  text-align: right;
+}
+
+.stats dd {
+  margin: 0;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .stats {
+    background: oklch(25% 3% 200);
+    border-color: oklch(50% 3% 200);
+  }
+}
