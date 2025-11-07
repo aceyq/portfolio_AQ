@@ -96,7 +96,47 @@ function renderCommitInfo(data, commits) {
   dl.append('dd').text(maxPeriod);
 }
 
-// Add this function after your existing functions in main.js
+// Step 3.1: Tooltip content rendering
+function renderTooltipContent(commit) {
+    const link = document.getElementById('commit-link');
+    const date = document.getElementById('commit-date');
+    const time = document.getElementById('commit-time');
+    const author = document.getElementById('commit-author');
+    const lines = document.getElementById('commit-lines');
+
+    if (!commit || Object.keys(commit).length === 0) return;
+
+    link.href = commit.url;
+    link.textContent = commit.id.slice(0, 8) + '...'; // Shorten commit hash
+    date.textContent = commit.datetime?.toLocaleDateString('en', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+    time.textContent = commit.datetime?.toLocaleTimeString('en', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    author.textContent = commit.author;
+    lines.textContent = commit.totalLines;
+}
+
+// Step 3.3: Tooltip visibility
+function updateTooltipVisibility(isVisible) {
+    const tooltip = document.getElementById('commit-tooltip');
+    tooltip.hidden = !isVisible;
+}
+
+// Step 3.4: Tooltip positioning
+function updateTooltipPosition(event) {
+    const tooltip = document.getElementById('commit-tooltip');
+    const padding = 10;
+    
+    // Position near mouse cursor with offset
+    tooltip.style.left = `${event.clientX + padding}px`;
+    tooltip.style.top = `${event.clientY + padding}px`;
+}
+
 function renderScatterPlot(data, commits) {
     // Step 2.1: Set up dimensions and margins
     const width = 1000;
@@ -145,27 +185,36 @@ function renderScatterPlot(data, commits) {
         .tickSize(-usableArea.width)
     );
   
-    // Step 2.1: Draw the dots with time-based coloring
+    // Step 2.1: Draw the dots with time-based coloring and hover events
     const dots = svg.append('g').attr('class', 'dots');
-  
+
     dots
-      .selectAll('circle')
-      .data(commits)
-      .join('circle')
-      .attr('cx', (d) => xScale(d.datetime))
-      .attr('cy', (d) => yScale(d.hourFrac))
-      .attr('r', 4)
-      .attr('fill', (d) => {
-        // Color based on time of day
-        const hour = d.datetime.getHours();
-        if (hour < 6) return '#4e79a7'; // Night - blue
-        if (hour < 12) return '#f28e2c'; // Morning - orange
-        if (hour < 18) return '#e15759'; // Afternoon - red
-        return '#76b7b2'; // Evening - teal
-      })
-      .attr('opacity', 0.7)
-      .attr('stroke', 'white')
-      .attr('stroke-width', 1);
+        .selectAll('circle')
+        .data(commits)
+        .join('circle')
+        .attr('cx', (d) => xScale(d.datetime))
+        .attr('cy', (d) => yScale(d.hourFrac))
+        .attr('r', 4)
+        .attr('fill', (d) => {
+            // Color based on time of day
+            const hour = d.datetime.getHours();
+            if (hour < 6) return '#4e79a7'; // Night - blue
+            if (hour < 12) return '#f28e2c'; // Morning - orange
+            if (hour < 18) return '#e15759'; // Afternoon - red
+            return '#76b7b2'; // Evening - teal
+        })
+        .attr('opacity', 0.7)
+        .attr('stroke', 'white')
+        .attr('stroke-width', 1)
+        // Step 3.1: Add hover events
+        .on('mouseenter', (event, commit) => {
+            renderTooltipContent(commit);
+            updateTooltipVisibility(true);
+            updateTooltipPosition(event);
+        })
+        .on('mouseleave', () => {
+            updateTooltipVisibility(false);
+        });
   
     // Step 2.2: Add axes
     const xAxis = d3.axisBottom(xScale);
@@ -207,14 +256,13 @@ function renderScatterPlot(data, commits) {
       .attr('x', -height / 2)
       .attr('y', 15)
       .text('Time of Day');
-  }
+}
 
 // Load everything and display stats AND scatterplot
 let data = await loadData();
 let commits = processCommits(data);
 renderCommitInfo(data, commits);
-renderScatterPlot(data, commits); // Add this line
+renderScatterPlot(data, commits);
 
 console.log('Data loaded:', data);
 console.log('Commits processed:', commits);
-
