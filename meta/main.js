@@ -351,21 +351,16 @@ function renderScatterPlot(data, commits) {
       renderLanguageBreakdown(selection, commits, xScale, yScale);
     }
 
-    // Step 5.1: Create brush with proper extent
+    // Step 5.1: Create brush
     const brush = d3.brush()
-    .extent([[usableArea.left, usableArea.top], [usableArea.right, usableArea.bottom]])
-    .on('start brush end', brushed);
+      .extent([[usableArea.left, usableArea.top], [usableArea.right, usableArea.bottom]])
+      .on('start brush end', brushed);
 
     // Apply brush to SVG
     svg.call(brush);
 
-    // Step 5.2: Enhanced raising - fix tooltip issue for bottom dots
-    svg.selectAll('.dots, .x-axis, .y-axis, .gridlines, .x-label, .y-label').raise();
-
-    // Also raise any other interactive elements
-    setTimeout(() => {
-        svg.selectAll('.dots, .x-axis, .y-axis, .gridlines, .x-label, .y-label').raise();
-    }, 100);
+    // Step 5.2: Raise dots to fix tooltip issue
+    svg.selectAll('.dots, .overlay ~ *').raise();
 }
 
 // Load everything and display stats AND scatterplot
