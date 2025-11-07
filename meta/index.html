@@ -14,8 +14,35 @@
     
     <div id="stats"></div>
     
-    <!-- ADD THIS SECTION FOR SCATTERPLOT -->
     <h2>Commits by Time of Day</h2>
+    
+    <!-- Step 5.5: Selection count display -->
+    <p id="selection-count">No commits selected</p>
+    
     <div id="chart"></div>
+    
+    <!-- Step 5.6: Language breakdown -->
+    <h3>Language Breakdown (Selected Commits)</h3>
+    <dl id="language-breakdown" class="stats"></dl>
+    
+    <!-- Tooltip -->
+    <dl id="commit-tooltip" class="info tooltip" hidden>
+        <dt>Commit</dt>
+        <dd>
+            <a href="" id="commit-link" target="_blank"></a>
+        </dd>
+        
+        <dt>Date</dt>
+        <dd id="commit-date"></dd>
+        
+        <dt>Time</dt>
+        <dd id="commit-time"></dd>
+        
+        <dt>Author</dt>
+        <dd id="commit-author"></dd>
+        
+        <dt>Lines edited</dt>
+        <dd id="commit-lines"></dd>
+    </dl>
 </body>
 </html>

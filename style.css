@@ -540,3 +540,52 @@ dl.info dd {
       color: oklch(80% 50% 300);
   }
 }
+
+/* Step 5.4: Selected dots styling */
+circle.selected {
+  fill: #ff6b6b !important;
+  stroke: #ff0000;
+  stroke-width: 2px;
+}
+
+/* Step 5.3: Brush selection styling */
+.selection {
+  fill: var(--color-accent);
+  fill-opacity: 0.1;
+  stroke: var(--color-accent);
+  stroke-opacity: 0.7;
+  stroke-dasharray: 5 3;
+  animation: marching-ants 2s linear infinite;
+}
+
+@keyframes marching-ants {
+  to {
+    stroke-dashoffset: -8; /* 5 + 3 */
+  }
+}
+
+/* Handle styling */
+.handle {
+  fill: var(--color-accent);
+  fill-opacity: 0.5;
+}
+
+/* Language breakdown styling */
+#language-breakdown {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: oklch(98% 1% 200);
+  border-radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  #language-breakdown {
+    background: oklch(25% 3% 200);
+  }
+}
+
+#selection-count {
+  font-weight: bold;
+  color: var(--color-accent);
+  margin: 1rem 0;
+}

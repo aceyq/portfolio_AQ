@@ -137,6 +137,72 @@ function updateTooltipPosition(event) {
     tooltip.style.top = `${event.pageY + padding}px`;
 }
 
+// Step 5.4: Check if commit is within brush selection
+function isCommitSelected(selection, commit, xScale, yScale) {
+  if (!selection) {
+    return false;
+  }
+  
+  // Convert commit data to pixel coordinates
+  const x = xScale(commit.datetime);
+  const y = yScale(commit.hourFrac);
+  
+  // Check if point is within brush rectangle
+  return x >= selection[0][0] && 
+         x <= selection[1][0] && 
+         y >= selection[0][1] && 
+         y <= selection[1][1];
+}
+
+// Step 5.5: Show count of selected commits
+function renderSelectionCount(selection, commits, xScale, yScale) {
+  const selectedCommits = selection
+    ? commits.filter((d) => isCommitSelected(selection, d, xScale, yScale))
+    : [];
+
+  const countElement = document.querySelector('#selection-count');
+  countElement.textContent = `${
+    selectedCommits.length || 'No'
+  } commits selected`;
+
+  return selectedCommits;
+}
+
+// Step 5.6: Show language breakdown
+function renderLanguageBreakdown(selection, commits, xScale, yScale) {
+  const selectedCommits = selection
+    ? commits.filter((d) => isCommitSelected(selection, d, xScale, yScale))
+    : [];
+  const container = document.getElementById('language-breakdown');
+
+  if (selectedCommits.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const lines = selectedCommits.flatMap((d) => d.lines);
+
+  // Use d3.rollup to count lines per language
+  const breakdown = d3.rollup(
+    lines,
+    (v) => v.length,
+    (d) => d.type,
+  );
+
+  // Update DOM with breakdown
+  container.innerHTML = '';
+
+  for (const [language, count] of breakdown) {
+    const proportion = count / lines.length;
+    const formatted = d3.format('.1~%')(proportion);
+
+    container.innerHTML += `
+      <dt>${language}</dt>
+      <dd>${count} lines (${formatted})</dd>
+    `;
+  }
+}
+
 function renderScatterPlot(data, commits) {
     // Step 2.1: Set up dimensions and margins
     const width = 1000;
@@ -161,7 +227,7 @@ function renderScatterPlot(data, commits) {
       .style('max-width', '100%')
       .style('height', 'auto');
   
-    // Create scales
+    // Create scales (make them available for brushing)
     const xScale = d3
       .scaleTime()
       .domain(d3.extent(commits, (d) => d.datetime))
@@ -274,6 +340,27 @@ function renderScatterPlot(data, commits) {
       .attr('x', -height / 2)
       .attr('y', 15)
       .text('Time of Day');
+
+    // Step 5.4: Brush event handler
+    function brushed(event) {
+      const selection = event.selection;
+      d3.selectAll('circle').classed('selected', (d) =>
+        isCommitSelected(selection, d, xScale, yScale)
+      );
+      renderSelectionCount(selection, commits, xScale, yScale);
+      renderLanguageBreakdown(selection, commits, xScale, yScale);
+    }
+
+    // Step 5.1: Create brush
+    const brush = d3.brush()
+      .extent([[usableArea.left, usableArea.top], [usableArea.right, usableArea.bottom]])
+      .on('start brush end', brushed);
+
+    // Apply brush to SVG
+    svg.call(brush);
+
+    // Step 5.2: Raise dots to fix tooltip issue
+    svg.selectAll('.dots, .overlay ~ *').raise();
 }
 
 // Load everything and display stats AND scatterplot
