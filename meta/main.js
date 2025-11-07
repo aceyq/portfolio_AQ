@@ -96,10 +96,125 @@ function renderCommitInfo(data, commits) {
   dl.append('dd').text(maxPeriod);
 }
 
-// Load everything and display stats
+// Add this function after your existing functions in main.js
+function renderScatterPlot(data, commits) {
+    // Step 2.1: Set up dimensions and margins
+    const width = 1000;
+    const height = 600;
+    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+  
+    const usableArea = {
+      top: margin.top,
+      right: width - margin.right,
+      bottom: height - margin.bottom,
+      left: margin.left,
+      width: width - margin.left - margin.right,
+      height: height - margin.top - margin.bottom,
+    };
+  
+    // Create SVG
+    const svg = d3
+      .select('#chart')
+      .append('svg')
+      .attr('viewBox', `0 0 ${width} ${height}`)
+      .style('overflow', 'visible')
+      .style('max-width', '100%')
+      .style('height', 'auto');
+  
+    // Create scales
+    const xScale = d3
+      .scaleTime()
+      .domain(d3.extent(commits, (d) => d.datetime))
+      .range([usableArea.left, usableArea.right])
+      .nice();
+  
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, 24])
+      .range([usableArea.bottom, usableArea.top]);
+  
+    // Step 2.3: Add gridlines first
+    const gridlines = svg
+      .append('g')
+      .attr('class', 'gridlines')
+      .attr('transform', `translate(${usableArea.left}, 0)`);
+  
+    gridlines.call(
+      d3.axisLeft(yScale)
+        .tickFormat('')
+        .tickSize(-usableArea.width)
+    );
+  
+    // Step 2.1: Draw the dots with time-based coloring
+    const dots = svg.append('g').attr('class', 'dots');
+  
+    dots
+      .selectAll('circle')
+      .data(commits)
+      .join('circle')
+      .attr('cx', (d) => xScale(d.datetime))
+      .attr('cy', (d) => yScale(d.hourFrac))
+      .attr('r', 4)
+      .attr('fill', (d) => {
+        // Color based on time of day
+        const hour = d.datetime.getHours();
+        if (hour < 6) return '#4e79a7'; // Night - blue
+        if (hour < 12) return '#f28e2c'; // Morning - orange
+        if (hour < 18) return '#e15759'; // Afternoon - red
+        return '#76b7b2'; // Evening - teal
+      })
+      .attr('opacity', 0.7)
+      .attr('stroke', 'white')
+      .attr('stroke-width', 1);
+  
+    // Step 2.2: Add axes
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3
+      .axisLeft(yScale)
+      .tickFormat((d) => {
+        const hour = d % 24;
+        return String(hour).padStart(2, '0') + ':00';
+      });
+  
+    // Add X axis
+    svg
+      .append('g')
+      .attr('class', 'x-axis')
+      .attr('transform', `translate(0, ${usableArea.bottom})`)
+      .call(xAxis);
+  
+    // Add Y axis
+    svg
+      .append('g')
+      .attr('class', 'y-axis')
+      .attr('transform', `translate(${usableArea.left}, 0)`)
+      .call(yAxis);
+  
+    // Add axis labels
+    svg
+      .append('text')
+      .attr('class', 'x-label')
+      .attr('text-anchor', 'middle')
+      .attr('x', width / 2)
+      .attr('y', height - 5)
+      .text('Date');
+  
+    svg
+      .append('text')
+      .attr('class', 'y-label')
+      .attr('text-anchor', 'middle')
+      .attr('transform', `rotate(-90)`)
+      .attr('x', -height / 2)
+      .attr('y', 15)
+      .text('Time of Day');
+  }
+
+// Load everything and display stats AND scatterplot
 let data = await loadData();
 let commits = processCommits(data);
 renderCommitInfo(data, commits);
+renderScatterPlot(data, commits); // Add this line
 
 console.log('Data loaded:', data);
 console.log('Commits processed:', commits);
+

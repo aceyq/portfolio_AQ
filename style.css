@@ -382,3 +382,71 @@ h1 {
     color: oklch(95% 3% 200);
   }
 }
+
+/* Scatterplot Styling */
+#chart {
+  margin: 2rem 0;
+}
+
+/* Gridlines - subtle styling */
+.gridlines line {
+  stroke: oklch(80% 3% 200);
+  stroke-dasharray: 2,2;
+  stroke-opacity: 0.5;
+}
+
+.gridlines path {
+  stroke: none;
+}
+
+/* Axes styling */
+.x-axis path,
+.y-axis path {
+  stroke: oklch(60% 3% 200);
+}
+
+.x-axis line,
+.y-axis line {
+  stroke: oklch(80% 3% 200);
+}
+
+.x-axis text,
+.y-axis text {
+  fill: oklch(40% 3% 200);
+  font-size: 0.8rem;
+}
+
+/* Axis labels */
+.x-label,
+.y-label {
+  fill: oklch(40% 3% 200);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* Dark mode support for scatterplot */
+@media (prefers-color-scheme: dark) {
+  .gridlines line {
+    stroke: oklch(50% 3% 200);
+  }
+  
+  .x-axis path,
+  .y-axis path {
+    stroke: oklch(70% 3% 200);
+  }
+  
+  .x-axis line,
+  .y-axis line {
+    stroke: oklch(50% 3% 200);
+  }
+  
+  .x-axis text,
+  .y-axis text {
+    fill: oklch(80% 3% 200);
+  }
+  
+  .x-label,
+  .y-label {
+    fill: oklch(80% 3% 200);
+  }
+}
