@@ -350,6 +350,7 @@ h1 {
   border: 1px solid oklch(80% 3% 200);
   border-radius: 8px;
   background: oklch(98% 1% 200);
+  color: oklch(20% 3% 200); /* Ensure text is dark in light mode */
 }
 
 .stats dt {
@@ -362,12 +363,22 @@ h1 {
   margin: 0;
   font-size: 1.1em;
   font-weight: bold;
+  color: oklch(20% 3% 200); /* Ensure numbers are dark in light mode */
 }
 
-/* Dark mode support */
+/* Dark mode support - FIXED */
 @media (prefers-color-scheme: dark) {
   .stats {
     background: oklch(25% 3% 200);
     border-color: oklch(50% 3% 200);
+    color: oklch(90% 3% 200); 
+  }
+  
+  .stats dt {
+    color: oklch(80% 3% 200); 
+  }
+  
+  .stats dd {
+    color: oklch(95% 3% 200);
   }
 }
