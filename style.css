@@ -450,3 +450,93 @@ h1 {
     fill: oklch(80% 3% 200);
   }
 }
+
+/* Step 3: Tooltip Styling */
+
+/* Info list styling - reusable */
+dl.info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1rem;
+  margin: 0;
+}
+
+dl.info dt {
+  font-weight: bold;
+  color: oklch(60% 3% 200);
+  text-align: right;
+}
+
+dl.info dd {
+  margin: 0;
+  color: oklch(20% 3% 200);
+}
+
+/* Tooltip specific styling */
+.tooltip {
+  position: fixed;
+  z-index: 1000;
+  background: oklch(100% 0% 0 / 95%);
+  backdrop-filter: blur(10px);
+  border: 1px solid oklch(80% 3% 200);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px oklch(0% 0% 0 / 10%);
+  max-width: 300px;
+  pointer-events: none; /* Allow clicking through tooltip */
+}
+
+.tooltip a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-family: monospace;
+}
+
+.tooltip a:hover {
+  text-decoration: underline;
+}
+
+/* Dot hover effects */
+.dots circle {
+  transition: 200ms;
+  transform-origin: center;
+  transform-box: fill-box;
+  cursor: pointer;
+}
+
+.dots circle:hover {
+  transform: scale(1.5);
+  opacity: 1 !important;
+  stroke-width: 2;
+}
+
+/* Tooltip visibility transitions */
+#commit-tooltip {
+  transition: opacity 200ms ease, visibility 200ms ease;
+}
+
+#commit-tooltip[hidden] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Dark mode support for tooltip */
+@media (prefers-color-scheme: dark) {
+  .tooltip {
+      background: oklch(25% 3% 200 / 95%);
+      border-color: oklch(50% 3% 200);
+      color: oklch(90% 3% 200);
+  }
+  
+  dl.info dt {
+      color: oklch(70% 3% 200);
+  }
+  
+  dl.info dd {
+      color: oklch(95% 3% 200);
+  }
+  
+  .tooltip a {
+      color: oklch(80% 50% 300);
+  }
+}

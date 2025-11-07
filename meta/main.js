@@ -127,14 +127,14 @@ function updateTooltipVisibility(isVisible) {
     tooltip.hidden = !isVisible;
 }
 
-// Step 3.4: Tooltip positioning
+// Step 3.4: Tooltip positioning - FIXED VERSION
 function updateTooltipPosition(event) {
     const tooltip = document.getElementById('commit-tooltip');
     const padding = 10;
     
-    // Position near mouse cursor with offset
-    tooltip.style.left = `${event.clientX + padding}px`;
-    tooltip.style.top = `${event.clientY + padding}px`;
+    // Use pageX/pageY to account for scrolling
+    tooltip.style.left = `${event.pageX + padding}px`;
+    tooltip.style.top = `${event.pageY + padding}px`;
 }
 
 function renderScatterPlot(data, commits) {
@@ -173,6 +173,15 @@ function renderScatterPlot(data, commits) {
       .domain([0, 24])
       .range([usableArea.bottom, usableArea.top]);
   
+    // Step 4.1: Create radius scale for dot sizes
+    const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
+    
+    // Step 4.2: Use square root scale for accurate area perception
+    const rScale = d3
+      .scaleSqrt() // Square root scale for proportional areas
+      .domain([minLines, maxLines])
+      .range([2, 30]); // Adjust these values based on your preference
+  
     // Step 2.3: Add gridlines first
     const gridlines = svg
       .append('g')
@@ -188,13 +197,17 @@ function renderScatterPlot(data, commits) {
     // Step 2.1: Draw the dots with time-based coloring and hover events
     const dots = svg.append('g').attr('class', 'dots');
 
+    // Step 4.3: Sort commits by size for better overlapping interaction
+    const sortedCommits = d3.sort(commits, (d) => -d.totalLines); // Descending order
+
     dots
         .selectAll('circle')
-        .data(commits)
+        .data(sortedCommits) // Use sorted commits instead of original
         .join('circle')
         .attr('cx', (d) => xScale(d.datetime))
         .attr('cy', (d) => yScale(d.hourFrac))
-        .attr('r', 4)
+        // Step 4.1: Use radius scale based on lines edited
+        .attr('r', (d) => rScale(d.totalLines))
         .attr('fill', (d) => {
             // Color based on time of day
             const hour = d.datetime.getHours();
@@ -203,16 +216,21 @@ function renderScatterPlot(data, commits) {
             if (hour < 18) return '#e15759'; // Afternoon - red
             return '#76b7b2'; // Evening - teal
         })
-        .attr('opacity', 0.7)
+        .style('fill-opacity', 0.7) // Add transparency for overlapping dots
         .attr('stroke', 'white')
         .attr('stroke-width', 1)
-        // Step 3.1: Add hover events
+        // Step 3.1 & 4.1: Enhanced hover events with opacity changes
         .on('mouseenter', (event, commit) => {
+            d3.select(event.currentTarget).style('fill-opacity', 1); // Full opacity on hover
             renderTooltipContent(commit);
             updateTooltipVisibility(true);
             updateTooltipPosition(event);
         })
-        .on('mouseleave', () => {
+        .on('mousemove', (event) => {
+            updateTooltipPosition(event);
+        })
+        .on('mouseleave', (event) => {
+            d3.select(event.currentTarget).style('fill-opacity', 0.7); // Restore opacity
             updateTooltipVisibility(false);
         });
   
