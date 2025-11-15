@@ -16,7 +16,7 @@ select {
 
 body {
     /* Set line height to 1.5 times the font size
-       and use the OS’s UI font as the website font
+       and use the OS's UI font as the website font
     */
     font: 100%/1.5 system-ui;
 
@@ -86,21 +86,87 @@ form button {
   justify-self:start;
 }
 
+/* === PROJECT CARD STYLES - FIXED === */
 .projects {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
-  gap: 1em;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
 }
 
-.projects article {
+.project-card {
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  break-inside: avoid;
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Fixed image sizing */
+.project-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border: 1px solid #e9ecef;
+}
+
+.project-content {
   display: grid;
-  grid-template-rows: subgrid;
-  grid-row: span 3;
-  margin: 0;
+  gap: 0.5rem;
 }
 
-.projects h2 {
-  margin: 0;
+.project-year {
+  color: oklch(60% 3% 200);
+  font-size: 0.9em;
+  font-style: italic;
+  border-top: 1px solid oklch(80% 3% 200 / 40%);
+  padding-top: 0.5rem;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.tag {
+  background: #f8f9fa;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #495057;
+  border: 1px solid #e9ecef;
+}
+
+.project-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.project-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.project-link:hover {
+  background: #0056b3;
+  color: white;
 }
 
 /* better heading */
@@ -208,20 +274,6 @@ h1 {
 #profile-stats dd:nth-child(4) { grid-column: 2; }
 #profile-stats dt:nth-child(5) { grid-column: 3; } /* Following */
 #profile-stats dd:nth-child(6) { grid-column: 3; }
-
-/* Project year styling */
-.project-content {
-  display: grid;
-  gap: 0.5rem;
-}
-
-.project-year {
-  color: oklch(60% 3% 200);
-  font-size: 0.9em;
-  font-style: italic;
-  border-top: 1px solid oklch(80% 3% 200 / 40%);
-  padding-top: 0.5rem;
-}
 
 /* === PIE CHART AND LEGEND STYLING === */
 
@@ -588,4 +640,22 @@ circle.selected {
   font-weight: bold;
   color: var(--color-accent);
   margin: 1rem 0;
+}
+
+/* Dark mode support for project cards */
+@media (prefers-color-scheme: dark) {
+  .project-card {
+    background: oklch(25% 3% 200);
+    border-color: oklch(50% 3% 200);
+  }
+  
+  .tag {
+    background: oklch(35% 3% 200);
+    border-color: oklch(50% 3% 200);
+    color: oklch(90% 3% 200);
+  }
+  
+  .project-image {
+    border-color: oklch(50% 3% 200);
+  }
 }
