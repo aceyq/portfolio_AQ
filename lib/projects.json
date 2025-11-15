@@ -1,74 +1,83 @@
 [
-        {
-          "title": "Kotx Audio Editor",
-          "year": "2025",
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "A web-based audio editing application built with HTML and JavaScript for real-time audio manipulation and effects processing."
-        },
-        {
-          "title": "Voderrn Inventory API",
-          "year": "2025",
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "RESTful inventory management API built with Python and FastAPI, featuring product tracking, stock management, and order processing."
-        },
-        {
-          "title": "Recipe Rating Predictor",
-          "year": "2024",
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "Data science project for DSC 80 exploring recipe quality and user ratings using machine learning and statistical analysis."
-        },
-        {
-          "title": "Predictive Analytics for Social Media Engagement",
-          "year": "2024",
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "Developed machine learning model to predict viral content with 85% accuracy using Python and Scikit-learn."
-        },
-        {
-          "title": "Real-time Data Pipeline for User Behavior",
-          "year": "2024", 
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "Built ETL pipeline processing 1GB+ of daily user interaction data with SQL and Apache Spark."
-        },
-        {
-          "title": "Interactive Data Visualization Dashboard",
-          "year": "2024",
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "Created interactive Tableau dashboard for business metrics with real-time data updates."
-        },
-        {
-          "title": "Sentiment Analysis for Product Reviews",
-          "year": "2023",
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "Implemented NLP pipeline to analyze customer sentiment from 50,000+ product reviews using Python and NLTK."
-        },
-        {
-          "title": "Recommendation System Prototype",
-          "year": "2023",
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "Built collaborative filtering algorithm for content recommendations using TensorFlow and user behavior data."
-        },
-        {
-          "title": "Customer Segmentation Analysis",
-          "year": "2023",
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "Used K-means clustering to identify customer segments for targeted marketing campaigns with 95% accuracy."
-        },
-        {
-          "title": "Time Series Forecasting Model",
-          "year": "2023",
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "Developed ARIMA model to forecast sales trends with 92% accuracy for retail business analytics."
-        },
-        {
-          "title": "Data Cleaning Automation Script",
-          "year": "2022",
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "Created Python scripts to automate data preprocessing, reducing manual work by 70% for data science workflows."
-        },
-        {
-          "title": "Web Scraping for Market Research",
-          "year": "2022",
-          "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-          "description": "Built web scraper to collect competitive pricing data from e-commerce websites using BeautifulSoup and Selenium."
-        }
+  {
+    "title": "Bikewatching",
+    "year": "2024",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Interactive visualization of Boston-area bike traffic patterns using Mapbox and D3.js. Features real-time filtering by time of day, traffic flow analysis, and station-level bike share data with 260,000+ trip records.",
+    "tags": ["JavaScript", "D3.js", "Mapbox", "Data Visualization", "GIS", "Interactive"],
+    "github": "https://github.com/aceyq/CycleScope",
+    "demo": "https://aceyq.github.io/CycleScope/"
+  },
+  {
+    "title": "Kotx Audio Editor",
+    "year": "2025",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "A web-based audio editing application built with HTML and JavaScript for real-time audio manipulation and effects processing."
+  },
+  {
+    "title": "Voderrn Inventory API",
+    "year": "2025",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "RESTful inventory management API built with Python and FastAPI, featuring product tracking, stock management, and order processing."
+  },
+  {
+    "title": "Recipe Rating Predictor",
+    "year": "2024",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Data science project for DSC 80 exploring recipe quality and user ratings using machine learning and statistical analysis."
+  },
+  {
+    "title": "Predictive Analytics for Social Media Engagement",
+    "year": "2024",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Developed machine learning model to predict viral content with 85% accuracy using Python and Scikit-learn."
+  },
+  {
+    "title": "Real-time Data Pipeline for User Behavior",
+    "year": "2024", 
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Built ETL pipeline processing 1GB+ of daily user interaction data with SQL and Apache Spark."
+  },
+  {
+    "title": "Interactive Data Visualization Dashboard",
+    "year": "2024",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Created interactive Tableau dashboard for business metrics with real-time data updates."
+  },
+  {
+    "title": "Sentiment Analysis for Product Reviews",
+    "year": "2023",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Implemented NLP pipeline to analyze customer sentiment from 50,000+ product reviews using Python and NLTK."
+  },
+  {
+    "title": "Recommendation System Prototype",
+    "year": "2023",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Built collaborative filtering algorithm for content recommendations using TensorFlow and user behavior data."
+  },
+  {
+    "title": "Customer Segmentation Analysis",
+    "year": "2023",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Used K-means clustering to identify customer segments for targeted marketing campaigns with 95% accuracy."
+  },
+  {
+    "title": "Time Series Forecasting Model",
+    "year": "2023",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Developed ARIMA model to forecast sales trends with 92% accuracy for retail business analytics."
+  },
+  {
+    "title": "Data Cleaning Automation Script",
+    "year": "2022",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Created Python scripts to automate data preprocessing, reducing manual work by 70% for data science workflows."
+  },
+  {
+    "title": "Web Scraping for Market Research",
+    "year": "2022",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Built web scraper to collect competitive pricing data from e-commerce websites using BeautifulSoup and Selenium."
+  }
 ]
