@@ -1,13 +1,13 @@
 [
-  {
-    "title": "Bikewatching",
-    "year": "2025",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "description": "Interactive visualization of Boston-area bike traffic patterns using Mapbox and D3.js. Features real-time filtering by time of day, traffic flow analysis, and station-level bike share data with 260,000+ trip records.",
-    "tags": ["JavaScript", "D3.js", "Mapbox", "Data Visualization", "GIS", "Interactive"],
-    "github": "https://github.com/aceyq/CycleScope",
-    "demo": "https://aceyq.github.io/CycleScope/"
-  },
+    {
+      "title": "Bikewatching",
+      "year": "2025",
+      "image": "assets/images/bikewatching-preview.jpg",
+      "description": "Interactive visualization of Boston-area bike traffic patterns using Mapbox and D3.js. Features real-time filtering by time of day, traffic flow analysis, and station-level bike share data with 260,000+ trip records.",
+      "tags": ["JavaScript", "D3.js", "Mapbox", "Data Visualization", "GIS", "Interactive"],
+      "github": "https://github.com/aceyq/CycleScope",
+      "demo": "https://aceyq.github.io/CycleScope/"
+    },
   {
     "title": "Kotx Audio Editor",
     "year": "2025",
