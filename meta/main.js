@@ -54,7 +54,7 @@ function processCommits(data) {
 // Step 1.1: Time slider event handler
 function onTimeSliderChange() {
   const slider = document.getElementById('commit-progress');
-  const timeDisplay = document.getElementById('commit-time');
+  const timeDisplay = document.getElementById('slider-time-display');
   
   commitProgress = Number(slider.value);
   commitMaxTime = timeScale.invert(commitProgress);
