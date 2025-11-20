@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Code Analysis - Acelynn Qiao</title>
 
-    <!-- Global + page styling -->
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style.css" />
 
-    <!-- Global navigation -->
+    <!-- global nav -->
     <script src="../global.js" type="module"></script>
-
-    <!-- Main logic for this page -->
+    <!-- page logic -->
     <script src="main.js" type="module"></script>
 </head>
 
@@ -19,35 +17,46 @@
     <h1>Code Analysis</h1>
     <p>This page shows statistics and analysis of my codebase.</p>
 
-    <!-- Step 1.1: Time slider -->
+    <!-- Step 1.1: timeline slider -->
     <div style="display: flex; align-items: baseline; margin: 2rem 0;">
         <label style="flex: 1;">
             Show commits until:
-            <input type="range" id="commit-progress" min="0" max="100" value="100" style="width: 100%;">
+            <input type="range" id="commit-progress" min="0" max="100" value="100" style="width: 100%;" />
             <time id="slider-time-display"></time>
         </label>
     </div>
 
-    <!-- Step 2: File unit visualization container -->
+    <!-- summary stats -->
+    <div id="stats"></div>
+
+    <!-- Step 3.1: scrollytelling layout -->
+    <div id="scrolly-1">
+        <!-- text / narrative column -->
+        <div id="scatter-story">
+            <!-- .step elements will be injected here by main.js -->
+        </div>
+
+        <!-- sticky visualization column -->
+        <div id="scatter-plot">
+            <h2>Commits by Time of Day</h2>
+
+            <!-- brush selection count -->
+            <p id="selection-count">No commits selected</p>
+
+            <!-- scatterplot svg goes here -->
+            <div id="chart"></div>
+
+            <!-- language breakdown -->
+            <h3>Language Breakdown (Selected Commits)</h3>
+            <dl id="language-breakdown" class="stats"></dl>
+        </div>
+    </div>
+
+    <!-- Step 2: unit visualization for files (moved below scrolly) -->
     <h2>Files in Repository</h2>
     <dl id="files"></dl>
 
-    <!-- Step 1 Stats -->
-    <div id="stats"></div>
-
-    <h2>Commits by Time of Day</h2>
-
-    <!-- Brush selection count -->
-    <p id="selection-count">No commits selected</p>
-
-    <!-- Scatterplot container -->
-    <div id="chart"></div>
-
-    <!-- Step 5.6: Language breakdown -->
-    <h3>Language Breakdown (Selected Commits)</h3>
-    <dl id="language-breakdown" class="stats"></dl>
-
-    <!-- Tooltip for scatter dots -->
+    <!-- tooltip for scatterplot -->
     <dl id="commit-tooltip" class="info tooltip" hidden>
         <dt>Commit</dt>
         <dd><a href="" id="commit-link" target="_blank"></a></dd>

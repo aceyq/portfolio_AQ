@@ -1,4 +1,5 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import scrollama from 'https://cdn.jsdelivr.net/npm/scrollama@3.2.0/+esm';
 
 // -------------------------------
 // Global variables
@@ -31,41 +32,44 @@ async function loadData() {
 }
 
 function processCommits(data) {
-  return d3.groups(data, (d) => d.commit).map(([commit, lines]) => {
-    const f = lines[0];
-    return {
-      id: commit,
-      url: `https://github.com/aceyq/portfolio_AQ/commit/${commit}`,
-      author: f.author,
-      date: f.date,
-      time: f.time,
-      timezone: f.timezone,
-      datetime: f.datetime,
-      hourFrac: f.datetime.getHours() + f.datetime.getMinutes() / 60,
-      totalLines: lines.length,
-      lines, // all lines for this commit
-    };
-  });
+  const commits = d3
+    .groups(data, (d) => d.commit)
+    .map(([commit, lines]) => {
+      const f = lines[0];
+      return {
+        id: commit,
+        url: `https://github.com/aceyq/portfolio_AQ/commit/${commit}`,
+        author: f.author,
+        date: f.date,
+        time: f.time,
+        timezone: f.timezone,
+        datetime: f.datetime,
+        hourFrac: f.datetime.getHours() + f.datetime.getMinutes() / 60,
+        totalLines: lines.length,
+        lines, // all lines for this commit
+      };
+    })
+    // ensure commits are sorted in time for scrollytelling
+    .sort((a, b) => d3.ascending(a.datetime, b.datetime));
+
+  return commits;
 }
 
 // -------------------------------
 // Step 2: File unit visualization
 // -------------------------------
 function updateFileDisplay(filteredCommits) {
-  // all lines in the filtered commits
   const lines = filteredCommits.flatMap((d) => d.lines);
 
-  // group by file, attach type, and sort by size (Step 2.3)
   const files = d3
     .groups(lines, (d) => d.file)
     .map(([name, lines]) => ({
       name,
       lines,
-      type: lines[0]?.type, // tech / language of first line
+      type: lines[0]?.type,
     }))
     .sort((a, b) => b.lines.length - a.lines.length);
 
-  // bind <div> per file to #files
   const filesContainer = d3
     .select('#files')
     .selectAll('div')
@@ -77,7 +81,6 @@ function updateFileDisplay(filteredCommits) {
       })
     );
 
-  // filename + line count (use <small> below name)
   filesContainer.select('dt > code').html((d) => d.name);
 
   filesContainer
@@ -87,10 +90,9 @@ function updateFileDisplay(filteredCommits) {
     .join('small')
     .text((d) => `${d.lines.length} lines`);
 
-  // set CSS custom property for color (Step 2.4)
+  // set CSS custom property for color by technology
   filesContainer.attr('style', (d) => `--color: ${colors(d.type)}`);
 
-  // inside each <dd>, draw one .loc div per line (Step 2.2)
   filesContainer
     .select('dd')
     .selectAll('div')
@@ -100,27 +102,22 @@ function updateFileDisplay(filteredCommits) {
 }
 
 // -------------------------------
-// Slider change handler (Step 1)
+// Slider handler (Step 1)
 // -------------------------------
 function onTimeSliderChange() {
   const slider = document.getElementById('commit-progress');
   const timeDisplay = document.getElementById('slider-time-display');
 
   commitProgress = Number(slider.value);
-
-  // map 0–100 → datetime
   commitMaxTime = timeScale.invert(commitProgress);
 
-  // update <time> display
   timeDisplay.textContent = commitMaxTime.toLocaleString('en', {
     dateStyle: 'long',
     timeStyle: 'short',
   });
 
-  // filter commits up to selected time
   filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
 
-  // update visuals that depend on filtered commits
   updateScatterPlot(data, filteredCommits);
   renderCommitInfo(data, filteredCommits);
   updateFileDisplay(filteredCommits);
@@ -353,7 +350,7 @@ function renderScatterPlot(data, commits) {
 }
 
 // -------------------------------
-// Scatter plot updates (slider)
+// Scatter plot updates (slider/scrolly)
 // -------------------------------
 function updateScatterPlot(data, commits) {
   const svg = d3.select('#chart').select('svg');
@@ -402,6 +399,55 @@ function updateScatterPlot(data, commits) {
 }
 
 // -------------------------------
+// Step 3.2: build scrolly text
+// -------------------------------
+function buildScatterStory(commits) {
+  d3.select('#scatter-story')
+    .selectAll('.step')
+    .data(commits)
+    .join('div')
+    .attr('class', 'step')
+    .html(
+      (d, i) => `
+        <p>On ${d.datetime.toLocaleString('en', {
+          dateStyle: 'full',
+          timeStyle: 'short',
+        })}, I made 
+        <a href="${d.url}" target="_blank">
+          ${i > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
+        </a>.</p>
+        <p>I edited ${d.totalLines} lines across ${
+          d3.rollups(
+            d.lines,
+            (D) => D.length,
+            (d) => d.file
+          ).length
+        } files. Then I looked over all I had made, and I saw that it was very good.</p>
+      `
+    );
+}
+
+// -------------------------------
+// Step 3.3: Scrollama callbacks
+// -------------------------------
+function onStepEnter(response) {
+  const commit = response.element.__data__;
+  commitMaxTime = commit.datetime;
+
+  // update slider position to match scrolly
+  commitProgress = timeScale(commitMaxTime);
+  const slider = document.getElementById('commit-progress');
+  slider.value = commitProgress;
+
+  // filter commits up to this one
+  filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+
+  updateScatterPlot(data, filteredCommits);
+  renderCommitInfo(data, filteredCommits);
+  updateFileDisplay(filteredCommits);
+}
+
+// -------------------------------
 // Initialization
 // -------------------------------
 async function init() {
@@ -419,10 +465,25 @@ async function init() {
   renderScatterPlot(data, commits);
   updateFileDisplay(filteredCommits);
 
+  // slider
   document
     .getElementById('commit-progress')
     .addEventListener('input', onTimeSliderChange);
 
+  // build scrollytelling steps
+  buildScatterStory(commits);
+
+  // setup Scrollama
+  const scroller = scrollama();
+  scroller
+    .setup({
+      container: '#scrolly-1',
+      step: '#scrolly-1 .step',
+      offset: 0.5, // middle of viewport
+    })
+    .onStepEnter(onStepEnter);
+
+  // initialize slider display
   onTimeSliderChange();
 }
 

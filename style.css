@@ -721,3 +721,37 @@ circle:hover {
   background: var(--color, steelblue);
   border-radius: 50%;
 }
+
+/* Step 3: Scrollytelling layout */
+#scrolly-1 {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+#scrolly-1 > * {
+  flex: 1;
+}
+
+#scatter-story {
+  position: relative;
+}
+
+/* sticky viz column */
+#scatter-plot {
+  position: sticky;
+  top: 0;
+  left: 0;
+  bottom: auto;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* each narrative step */
+#scatter-story .step {
+  padding-bottom: 4rem; /* space between commits */
+  max-width: 36rem;
+}
