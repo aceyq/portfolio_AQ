@@ -722,36 +722,52 @@ circle:hover {
   border-radius: 50%;
 }
 
-/* Step 3: Scrollytelling layout */
-#scrolly-1 {
-  position: relative;
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-}
+/* ===========================
+   Scrollytelling layout (Step 3)
+   =========================== */
 
-#scrolly-1 > * {
-  flex: 1;
-}
-
-#scatter-story {
-  position: relative;
-}
-
-/* sticky viz column */
-#scatter-plot {
-  position: sticky;
-  top: 0;
-  left: 0;
-  bottom: auto;
-  height: 50vh;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-/* each narrative step */
-#scatter-story .step {
-  padding-bottom: 4rem; /* space between commits */
-  max-width: 36rem;
-}
+   #scrolly-1 {
+    max-width: 1200px;      /* centers content like the example */
+    margin: 3rem auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
+    column-gap: 3rem;
+    align-items: flex-start;
+  }
+  
+  /* Left column: the story text */
+  #scatter-story {
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  /* Each commit paragraph block */
+  #scatter-story .step {
+    padding-bottom: 3.5rem;   /* space between commits */
+  }
+  
+  /* Right column: sticky viz */
+  #scatter-plot {
+    position: sticky;
+    top: 1.5rem;               /* how far from top it “sticks” */
+    height: calc(100vh - 3rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  /* Make the chart fill the top of the sticky column */
+  #scatter-plot h2 {
+    margin: 0;
+  }
+  
+  #chart {
+    flex: 1;                  /* chart grows to fill vertical space */
+  }
+  
+  /* Keep language breakdown right under the chart like the example */
+  #scatter-plot h3 {
+    margin-top: 0.75rem;
+  }
+  
