@@ -12,6 +12,15 @@
     <h1>Code Analysis</h1>
     <p>This page shows statistics and analysis of my codebase.</p>
     
+    <!-- Step 1.1: Add timeline slider -->
+    <div style="display: flex; align-items: baseline; margin: 2rem 0;">
+        <label style="flex: 1;">
+            Show commits until:
+            <input type="range" id="commit-progress" min="0" max="100" value="100" style="width: 100%;">
+            <time id="commit-time"></time>
+        </label>
+    </div>
+    
     <div id="stats"></div>
     
     <h2>Commits by Time of Day</h2>

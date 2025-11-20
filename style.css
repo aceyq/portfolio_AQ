@@ -659,3 +659,20 @@ circle.selected {
     border-color: oklch(50% 3% 200);
   }
 }
+
+/* Step 1.4: Smooth circle transitions */
+circle {
+  transition: all 200ms;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@starting-style {
+  circle {
+    r: 0;
+  }
+}
+
+circle:hover {
+  transform: scale(1.5);
+}
