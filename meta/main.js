@@ -13,7 +13,6 @@ let xScale, yScale;
 let data;
 let commits;
 
-// color scale for technologies (Step 2.4)
 let colors = d3.scaleOrdinal(d3.schemeTableau10);
 
 // -------------------------------
@@ -32,7 +31,7 @@ async function loadData() {
 }
 
 function processCommits(data) {
-  const commits = d3
+  return d3
     .groups(data, (d) => d.commit)
     .map(([commit, lines]) => {
       const f = lines[0];
@@ -46,17 +45,14 @@ function processCommits(data) {
         datetime: f.datetime,
         hourFrac: f.datetime.getHours() + f.datetime.getMinutes() / 60,
         totalLines: lines.length,
-        lines, // all lines for this commit
+        lines,
       };
     })
-    // ensure commits are sorted in time for scrollytelling
     .sort((a, b) => d3.ascending(a.datetime, b.datetime));
-
-  return commits;
 }
 
 // -------------------------------
-// Step 2: File unit visualization
+// File unit visualization
 // -------------------------------
 function updateFileDisplay(filteredCommits) {
   const lines = filteredCommits.flatMap((d) => d.lines);
@@ -90,7 +86,6 @@ function updateFileDisplay(filteredCommits) {
     .join('small')
     .text((d) => `${d.lines.length} lines`);
 
-  // set CSS custom property for color by technology
   filesContainer.attr('style', (d) => `--color: ${colors(d.type)}`);
 
   filesContainer
@@ -102,50 +97,67 @@ function updateFileDisplay(filteredCommits) {
 }
 
 // -------------------------------
-// Slider handler (Step 1)
+// Slider + sync helper
 // -------------------------------
-function onTimeSliderChange() {
+function syncToCommit(commit) {
+  commitMaxTime = commit.datetime;
+
+  // update slider position
+  commitProgress = timeScale(commitMaxTime);
   const slider = document.getElementById('commit-progress');
-  const timeDisplay = document.getElementById('slider-time-display');
+  if (slider) slider.value = commitProgress;
 
-  commitProgress = Number(slider.value);
-  commitMaxTime = timeScale.invert(commitProgress);
-
-  timeDisplay.textContent = commitMaxTime.toLocaleString('en', {
-    dateStyle: 'long',
-    timeStyle: 'short',
-  });
-
+  // filter commits up to this time
   filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
 
   updateScatterPlot(data, filteredCommits);
   renderCommitInfo(data, filteredCommits);
   updateFileDisplay(filteredCommits);
+
+  // also update slider <time> text
+  const timeDisplay = document.getElementById('slider-time-display');
+  if (timeDisplay) {
+    timeDisplay.textContent = commitMaxTime.toLocaleString('en', {
+      dateStyle: 'long',
+      timeStyle: 'short',
+    });
+  }
+}
+
+function onTimeSliderChange() {
+  const slider = document.getElementById('commit-progress');
+  if (!slider) return;
+
+  commitProgress = Number(slider.value);
+  commitMaxTime = timeScale.invert(commitProgress);
+
+  const commit = { datetime: commitMaxTime };
+  syncToCommit(commit);
 }
 
 // -------------------------------
 // Stats panel
 // -------------------------------
-function renderCommitInfo(data, commits) {
+function renderCommitInfo(allData, currentCommits) {
   d3.select('#stats').html('');
   const dl = d3.select('#stats').append('dl').attr('class', 'stats');
 
   dl.append('dt').html('Total <abbr title="Lines of code">LOC</abbr>');
-  dl.append('dd').text(data.length);
+  dl.append('dd').text(allData.length);
 
   dl.append('dt').text('Total commits');
-  dl.append('dd').text(commits.length);
+  dl.append('dd').text(currentCommits.length);
 
-  const numFiles = d3.group(data, (d) => d.file).size;
+  const numFiles = d3.group(allData, (d) => d.file).size;
   dl.append('dt').text('Number of files');
   dl.append('dd').text(numFiles);
 
-  const avgLineLength = d3.mean(data, (d) => d.length);
+  const avgLineLength = d3.mean(allData, (d) => d.length);
   dl.append('dt').text('Average line length');
   dl.append('dd').text(avgLineLength.toFixed(1));
 
   const fileLengths = d3.rollups(
-    data,
+    allData,
     (v) => d3.max(v, (d) => d.line),
     (d) => d.file
   );
@@ -154,7 +166,7 @@ function renderCommitInfo(data, commits) {
   dl.append('dd').text(`${longestFile[1]} lines`);
 
   const workByPeriod = d3.rollups(
-    data,
+    allData,
     (v) => v.length,
     (d) => {
       const hour = new Date(d.datetime).getHours();
@@ -250,9 +262,9 @@ function renderLanguageBreakdown(selection, commits, xScale, yScale) {
 }
 
 // -------------------------------
-// Scatter plot (initial render)
+// Scatter plot – initial render
 // -------------------------------
-function renderScatterPlot(data, commits) {
+function renderScatterPlot(allData, commits) {
   const width = 1000;
   const height = 600;
   const margin = { top: 20, right: 30, bottom: 40, left: 50 };
@@ -350,12 +362,12 @@ function renderScatterPlot(data, commits) {
 }
 
 // -------------------------------
-// Scatter plot updates (slider/scrolly)
+// Scatter plot updates
 // -------------------------------
-function updateScatterPlot(data, commits) {
+function updateScatterPlot(allData, commitsSubset) {
   const svg = d3.select('#chart').select('svg');
 
-  xScale.domain(d3.extent(commits, (d) => d.datetime));
+  xScale.domain(d3.extent(commitsSubset, (d) => d.datetime));
 
   const xAxis = d3.axisBottom(xScale).ticks(6);
   const xAxisGroup = svg.select('.x-axis');
@@ -363,9 +375,9 @@ function updateScatterPlot(data, commits) {
   xAxisGroup.call(xAxis);
 
   const dots = svg.select('g.dots');
-  const sorted = d3.sort(commits, (d) => -d.totalLines);
+  const sorted = d3.sort(commitsSubset, (d) => -d.totalLines);
 
-  const [minL, maxL] = d3.extent(commits, (d) => d.totalLines);
+  const [minL, maxL] = d3.extent(commitsSubset, (d) => d.totalLines);
   const rScale = d3.scaleSqrt().domain([minL, maxL]).range([2, 30]);
 
   dots
@@ -399,7 +411,7 @@ function updateScatterPlot(data, commits) {
 }
 
 // -------------------------------
-// Step 3.2: build scrolly text
+// Scrollytelling text builders
 // -------------------------------
 function buildScatterStory(commits) {
   d3.select('#scatter-story')
@@ -427,24 +439,37 @@ function buildScatterStory(commits) {
     );
 }
 
+function buildFileStory(commits) {
+  d3.select('#files-story')
+    .selectAll('.step')
+    .data(commits)
+    .join('div')
+    .attr('class', 'step')
+    .html(
+      (d, i) => `
+        <p>On ${d.datetime.toLocaleString('en', {
+          dateStyle: 'full',
+          timeStyle: 'short',
+        })}, I made 
+        <a href="${d.url}" target="_blank">
+          ${i > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
+        </a>.</p>
+        <p>Those ${d.totalLines} edited lines reshaped my files – scroll to see how the file sizes change.</p>
+      `
+    );
+}
+
 // -------------------------------
-// Step 3.3: Scrollama callbacks
+// Scrollama callbacks
 // -------------------------------
-function onStepEnter(response) {
+function onScatterStepEnter(response) {
   const commit = response.element.__data__;
-  commitMaxTime = commit.datetime;
+  syncToCommit(commit);
+}
 
-  // update slider position to match scrolly
-  commitProgress = timeScale(commitMaxTime);
-  const slider = document.getElementById('commit-progress');
-  slider.value = commitProgress;
-
-  // filter commits up to this one
-  filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
-
-  updateScatterPlot(data, filteredCommits);
-  renderCommitInfo(data, filteredCommits);
-  updateFileDisplay(filteredCommits);
+function onFilesStepEnter(response) {
+  const commit = response.element.__data__;
+  syncToCommit(commit);
 }
 
 // -------------------------------
@@ -465,25 +490,33 @@ async function init() {
   renderScatterPlot(data, commits);
   updateFileDisplay(filteredCommits);
 
-  // slider
-  document
-    .getElementById('commit-progress')
-    .addEventListener('input', onTimeSliderChange);
+  const slider = document.getElementById('commit-progress');
+  if (slider) {
+    slider.addEventListener('input', onTimeSliderChange);
+  }
 
-  // build scrollytelling steps
   buildScatterStory(commits);
+  buildFileStory(commits);
 
-  // setup Scrollama
-  const scroller = scrollama();
-  scroller
+  const scatterScroller = scrollama();
+  scatterScroller
     .setup({
       container: '#scrolly-1',
       step: '#scrolly-1 .step',
-      offset: 0.5, // middle of viewport
+      offset: 0.5,
     })
-    .onStepEnter(onStepEnter);
+    .onStepEnter(onScatterStepEnter);
 
-  // initialize slider display
+  const filesScroller = scrollama();
+  filesScroller
+    .setup({
+      container: '#scrolly-2',
+      step: '#scrolly-2 .step',
+      offset: 0.5,
+    })
+    .onStepEnter(onFilesStepEnter);
+
+  // initialize view from slider
   onTimeSliderChange();
 }
 
