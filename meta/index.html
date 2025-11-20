@@ -4,15 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Analysis - Acelynn Qiao</title>
+
+    <!-- Global + page styling -->
     <link rel="stylesheet" href="../style.css">
+
+    <!-- Global navigation -->
     <script src="../global.js" type="module"></script>
+
+    <!-- Main logic for this page -->
     <script src="main.js" type="module"></script>
 </head>
+
 <body>
     <h1>Code Analysis</h1>
     <p>This page shows statistics and analysis of my codebase.</p>
-    
-    <!-- Step 1.1: Add timeline slider -->
+
+    <!-- Step 1.1: Time slider -->
     <div style="display: flex; align-items: baseline; margin: 2rem 0;">
         <label style="flex: 1;">
             Show commits until:
@@ -20,36 +27,40 @@
             <time id="slider-time-display"></time>
         </label>
     </div>
-    
+
+    <!-- Step 2: File unit visualization container -->
+    <h2>Files in Repository</h2>
+    <dl id="files"></dl>
+
+    <!-- Step 1 Stats -->
     <div id="stats"></div>
-    
+
     <h2>Commits by Time of Day</h2>
-    
-    <!-- Step 5.5: Selection count display -->
+
+    <!-- Brush selection count -->
     <p id="selection-count">No commits selected</p>
-    
+
+    <!-- Scatterplot container -->
     <div id="chart"></div>
-    
+
     <!-- Step 5.6: Language breakdown -->
     <h3>Language Breakdown (Selected Commits)</h3>
     <dl id="language-breakdown" class="stats"></dl>
-    
-    <!-- Tooltip -->
+
+    <!-- Tooltip for scatter dots -->
     <dl id="commit-tooltip" class="info tooltip" hidden>
         <dt>Commit</dt>
-        <dd>
-            <a href="" id="commit-link" target="_blank"></a>
-        </dd>
-        
+        <dd><a href="" id="commit-link" target="_blank"></a></dd>
+
         <dt>Date</dt>
         <dd id="commit-date"></dd>
-        
+
         <dt>Time</dt>
         <dd id="commit-time"></dd>
-        
+
         <dt>Author</dt>
         <dd id="commit-author"></dd>
-        
+
         <dt>Lines edited</dt>
         <dd id="commit-lines"></dd>
     </dl>
