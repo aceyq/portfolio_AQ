@@ -359,26 +359,34 @@ function updateScatterPlot(data, commits) {
         });
 }
 
-// Load everything
-let data = await loadData();
-let commits = processCommits(data);
+let data;
+let commits;
 
-// Step 1.1: Initialize time scale
-timeScale = d3.scaleTime()
-  .domain([d3.min(commits, (d) => d.datetime), d3.max(commits, (d) => d.datetime)])
-  .range([0, 100]);
+async function init() {
+  // 1. Load and process data
+  data = await loadData();
+  commits = processCommits(data);
 
-filteredCommits = commits;
+  // 2. Initialize time scale & filtered commits
+  timeScale = d3.scaleTime()
+    .domain([
+      d3.min(commits, (d) => d.datetime),
+      d3.max(commits, (d) => d.datetime),
+    ])
+    .range([0, 100]);
 
-// Initialize the slider display
-onTimeSliderChange();
+  filteredCommits = commits;
 
-// Set up event listener
-document.getElementById('commit-progress').addEventListener('input', onTimeSliderChange);
+  // 3. Render initial stats and scatter plot
+  renderCommitInfo(data, commits);
+  renderScatterPlot(data, commits); // sets up xScale, yScale, svg, etc.
 
-renderCommitInfo(data, commits);
-renderScatterPlot(data, commits);
+  // 4. Hook up slider event listener
+  const slider = document.getElementById('commit-progress');
+  slider.addEventListener('input', onTimeSliderChange);
 
-console.log('Data loaded:', data);
-console.log('Commits processed:', commits);
-console.log('Time scale domain:', timeScale.domain());
+  // 5. Initialize UI (filter + time display) once
+  onTimeSliderChange();
+}
+
+init();

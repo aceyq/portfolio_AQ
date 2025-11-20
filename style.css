@@ -665,10 +665,9 @@ circle {
   transition: all 200ms;
   transform-origin: center;
   transform-box: fill-box;
-}
 
-@starting-style {
-  circle {
+  /* Animation for newly-entering circles */
+  @starting-style {
     r: 0;
   }
 }
